@@ -1,0 +1,13 @@
+import Image from "next/image";
+import Link from "next/link";
+import { Bot, Check, Clock3 } from "lucide-react";
+import { notFound } from "next/navigation";
+import { leads } from "@/lib/demo-data";
+import { StatusPill } from "@/components/status-pill";
+
+export default async function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const lead = leads.find((item) => item.id === id);
+  if (!lead) notFound();
+  return <div className="portal-page"><div className="detail-toolbar"><Link className="button secondary small" href="/directors-ai-workspace/leads">← Back to leads</Link><span className="eyebrow">New request</span><small>Received today at 9:42</small></div><div className="lead-detail-grid"><section className="panel lead-summary"><div className="panel-heading"><div><span className="eyebrow">Project brief</span><h2>{lead.customer}</h2><p>alex@example.ca · 613 555 0142</p></div><StatusPill>{lead.service}</StatusPill></div><div className="lead-brief-body"><div><dl><div><dt>Timeline</dt><dd>This season</dd></div><div><dt>Budget</dt><dd>$10k–$25k</dd></div><div><dt>Location</dt><dd>Nepean</dd></div></dl><h3>Project description</h3><p>Replace an aging patio and improve drainage near the rear steps.</p></div><div className="lead-photo"><Image src={lead.image} alt="Synthetic patio reference" fill sizes="250px" /></div></div></section><section className="panel ai-summary"><div className="panel-heading"><h2><Bot /> AI intake summary</h2><span className="status status-draft">Draft</span></div><p>Good fit based on service area. Missing dimensions and access details. Recommend a discovery call before booking a site visit.</p><div className="button-row"><button className="button primary small">Create reply draft</button><button className="button secondary small">Dismiss</button></div></section><section className="panel timeline-panel"><h2>Timeline</h2>{[["09:42", "Request submitted", true], ["09:46", "Confirmation delivered", true], ["09:48", "AI brief prepared", true], ["—", "Staff review pending", false]].map(([time, label, done]) => <div key={label as string}><span className={done ? "timeline-dot done" : "timeline-dot"}>{done && <Check />}</span><time>{time}</time><strong>{label}</strong></div>)}</section><section className="panel next-action"><h2>Next action</h2><label>Assigned owner<select defaultValue="Prince Inoba"><option>Prince Inoba</option><option>Nico D.</option></select></label><label>Stage<select defaultValue="Qualified"><option>New</option><option>Qualified</option><option>Site visit</option></select></label><button className="button primary"><Clock3 /> Save & schedule call</button></section></div></div>;
+}

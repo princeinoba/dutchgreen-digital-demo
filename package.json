@@ -1,0 +1,40 @@
+{
+  "name": "dutchgreen-digital-demo",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "start": "next start",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/unit/*.test.mjs",
+    "test:integration": "node --test tests/integration/*.test.mjs",
+    "test:e2e": "playwright test",
+    "build": "next build",
+    "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm test:integration && pnpm build",
+    "db:generate": "node scripts/integration-gate.mjs db:generate",
+    "db:migrate": "node scripts/integration-gate.mjs db:migrate",
+    "db:seed": "node scripts/integration-gate.mjs db:seed"
+  },
+  "dependencies": {
+    "lucide-react": "1.33.0",
+    "next": "16.3.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "eslint": "^9.35.0",
+    "eslint-config-next": "16.3.1",
+    "typescript": "^5.9.2"
+  },
+  "type": "module"
+}
