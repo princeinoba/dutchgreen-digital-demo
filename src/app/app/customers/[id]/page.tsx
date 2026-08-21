@@ -1,0 +1,13 @@
+import Image from "next/image";
+import Link from "next/link";
+import { MoreHorizontal } from "lucide-react";
+import { notFound } from "next/navigation";
+import { customers } from "@/lib/demo-data";
+import { StatusPill } from "@/components/status-pill";
+
+export default async function CustomerDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const customer = customers.find((item) => item.id === id);
+  if (!customer) notFound();
+  return <div className="portal-page"><div className="detail-toolbar"><Link className="button secondary small" href="/directors-ai-workspace/customers">← Back</Link><div className="toolbar-spacer" /><button className="button secondary small">Edit customer</button><button className="icon-button" aria-label="More customer actions"><MoreHorizontal /></button></div><section className="panel customer-hero"><div className="customer-avatar"><Image src={customer.image} alt="" fill sizes="90px" /></div><div><h2>{customer.name}</h2><p>{customer.email} · {customer.phone}</p><p>{customer.location}</p></div><div className="customer-wide-photo"><Image src={customer.image} alt="Synthetic project reference" fill sizes="280px" /></div><div className="customer-metrics"><StatusPill>Active customer</StatusPill><dl><div><dt>Lifetime value</dt><dd>$18,250</dd></div><div><dt>Open balance</dt><dd className="red">$4,200</dd></div></dl></div></section><div className="customer-detail-grid"><section className="panel table-panel"><div className="panel-heading"><h2>Project & job history</h2></div><div className="responsive-table"><table><thead><tr><th>Reference</th><th>Service</th><th>Date</th><th>Status</th><th>Value</th></tr></thead><tbody>{[["DG-JOB-205", "Driveway prep", "Aug 19", "In progress", "$8,400"], ["DG-EST-1047", "Driveway", "Aug 18", "Won", "$8,400"], ["DG-JOB-112", "Patio repair", "May 2025", "Completed", "$5,650"], ["INV-0092", "Invoice", "May 2025", "Paid", "$5,650"]].map((row) => <tr key={row[0]}>{row.map((value, index) => <td key={value} data-label={["Reference", "Service", "Date", "Status", "Value"][index]}>{index === 3 ? <StatusPill>{value}</StatusPill> : value}</td>)}</tr>)}</tbody></table></div></section><section className="panel communication-panel"><h2>Communication</h2>{[["Today 09:15", "Job reminder delivered"], ["Aug 18 14:06", "Estimate accepted"], ["Aug 18 11:22", "Estimate email opened"]].map(([time, note]) => <div key={time}><span /><time>{time}</time><strong>{note}</strong></div>)}<label>Internal note<textarea rows={3} placeholder="Add customer note…" /></label></section></div></div>;
+}
